@@ -92,7 +92,7 @@ Real-Time-Edge-Detection/
 
 ### 🎞 Real-Time Demo
 
-![Real-Time Edge Detection](docs/gifs/demo_edge.gif)
+![Real-Time Edge Detection](docs/images/ss.gif)
 
 ---
 
