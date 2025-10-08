@@ -187,7 +187,7 @@ Real-Time-Edge-Detection/
 
 ## 🧠 Architecture Overview
 
-![System Architecture](docs/architecture_diagram.png)
+![System Architecture](docs/images/architecture_diagram.png)
 
 ---
 
