@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    tools:context=".MainActivity">
+
+    <!-- GLSurfaceView used to render OpenCV processed frames -->
+    <android.opengl.GLSurfaceView
+        android:id="@+id/glSurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true" />
+
+    <!-- Overlay: FPS display and toggle button -->
+    <LinearLayout
+        android:id="@+id/overlayControls"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:background="@android:color/transparent">
+
+        <!-- FPS text -->
+        <TextView
+            android:id="@+id/tvFps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FPS: -"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:fontFamily="monospace" />
+
+        <!-- Mode toggle -->
+        <Button
+            android:id="@+id/btnToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Show Raw"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:elevation="4dp" />
+        <Button
+            android:id="@+id/btnSendFrame"
+            android:layout_marginStart="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Frame" />
+    </LinearLayout>
+
+</FrameLayout>
