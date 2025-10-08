@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📸 Real-Time Edge Detection Viewer</title>
+  <style>
+    body {
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    h2 {
+      margin-bottom: 10px;
+      color: #58a6ff;
+    }
+    #status {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #8b949e;
+    }
+    img {
+      max-width: 90%;
+      max-height: 75vh;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+<h2>📸 Real-Time Edge Detection Viewer</h2>
+<div id="status">Connecting...</div>
+<img id="frame" alt="Live feed" />
+
+<script>
+  const frameEl = document.getElementById("frame");
+  const statusEl = document.getElementById("status");
+
+  // 💡 Replace with your LAPTOP IP (where Node server runs)
+  const ws = new WebSocket("ws://192.168.1.9:8081");
+
+  ws.onopen = () => {
+    console.log("✅ Connected to relay server");
+    statusEl.textContent = "✅ Connected to relay server";
+  };
+
+  ws.onerror = (err) => {
+    console.error("❌ WebSocket error:", err);
+    statusEl.textContent = "❌ Connection error";
+  };
+
+  ws.onclose = () => {
+    console.warn("🔌 Disconnected");
+    statusEl.textContent = "🔌 Disconnected";
+  };
+
+  ws.onmessage = (event) => {
+    const data = event.data;
+    // Debug log
+    console.log("📩 Frame received:", typeof data, data.slice(0, 30));
+
+    // If message is a Base64 JPEG
+    if (typeof data === "string" && data.startsWith("/9j")) {
+      frameEl.src = "data:image/jpeg;base64," + data;
+      statusEl.textContent = "📸 Live frame updated (" + (data.length / 1024).toFixed(1) + " KB)";
+    }
+    // If Android sends JSON {type:"frame", image:"..."}
+    else if (typeof data === "string" && data.startsWith("{")) {
+      try {
+        const obj = JSON.parse(data);
+        if (obj.image) {
+          frameEl.src = "data:image/jpeg;base64," + obj.image;
+          statusEl.textContent = "📷 Frame (JSON) received";
+        }
+      } catch (e) {
+        console.error("⚠️ JSON parse failed:", e);
+      }
+    }
+  };
+</script>
+</body>
+</html>
